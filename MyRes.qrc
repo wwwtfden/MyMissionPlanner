@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>resources/icons/download-image.png</file>
+        <file>resources/icons/fail-image.png</file>
+        <file>resources/icons/success-image.png</file>
+        <file>resources/icons/parachute-icon.png</file>
+        <file>resources/icons/connection-icon.png</file>
+        <file>resources/icons/icon-arrow-down.png</file>
+        <file>resources/icons/icon-arrow-right.png</file>
+        <file>resources/icons/satellite-gps.png</file>
+        <file>resources/icons/temperature-icon.png</file>
+        <file>resources/icons/ruler-icon-rotated.png</file>
+        <file>resources/icons/map-clean.png</file>
+        <file>resources/icons/focus-map-icon.png</file>
+        <file>resources/icons/focus-plane-icon.png</file>
+        <file>resources/icons/center-icon.png</file>
+        <file>resources/icons/waypoint-list-icon.png</file>
+        <file>resources/icons/cache-icon.png</file>
+        <file>resources/icons/info-matrix-icon.png</file>
+        <file>resources/icons/parachute-draw-icon.png</file>
+        <file>resources/icons/tool-panel-icon.png</file>
+        <file>resources/icons/fixed-wings-icon.png</file>
+        <file>resources/icons/wp.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>wp.png</file>
+    </qresource>
+</RCC>
