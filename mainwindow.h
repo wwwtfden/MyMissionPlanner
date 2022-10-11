@@ -85,6 +85,8 @@ private slots:
 
     //void on_tableWidget_cellDoubleClicked(int row, int column);
 
+
+
 public slots:
   //  void clickDelButton();
     void slotZoom();

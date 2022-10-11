@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->addButton, &QPushButton::clicked, this, &MainWindow::addWp);
     connect(ui->ShowMapWidget, &FlightMapWidget::setLabelStatusBarText, ui->label, &QLabel::setText);
     //connect(ui->ShowMapWidget, &FlightMapWidget::wpDeleted, this, &MainWindow::deleteWp);
-    connect(ui->debugButton, &QPushButton::clicked, this, &MainWindow::clearLayout);
+//    connect(ui->debugButton, &QPushButton::clicked, this, &MainWindow::clearLayout);
   //  connect(MainWindow, &MainWindow::activateWindow, this, &MainWindow::tabClicked);
     connect(ui->ShowMapWidget, &FlightMapWidget::wpDeleted, this, &MainWindow::deleteWp);
     connect(ui->ShowMapWidget, &FlightMapWidget::wpAdded, this, &MainWindow::addWpWithData);
@@ -665,23 +665,6 @@ void MainWindow::setToolTipsForTable()
     }
 }
 
-
-//QWidget* MainWindow::createButtonWidget() const {
-//    QWidget* wgt = new QWidget;
-//    QBoxLayout* l = new QHBoxLayout;
-//    QPushButton* btn = new QPushButton( "X" );
-//   // connect( btn, SIGNAL( clicked( bool ) ), SLOT( onBtnClicked() ) );
-//    l->setMargin( 0 );
-//    l->addWidget( btn );
-//    l->addStretch();
-//    wgt->setLayout( l );
-
-//    return wgt;
-//}
-
-//void MainWindow::clickDelButton(){
-
-//}
 
 
 void MainWindow::slotZoom()
