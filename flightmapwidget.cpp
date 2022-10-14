@@ -18,19 +18,16 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
             spifFile = QFileDialog::getOpenFileName(0, "Открыть map cache", "", "*.spif");
         }
     // подгрузка карты/растра
-    // путь на домашнем ноутбуке
-    //this->cachePainter = new CachePainter("E:/05-03-2020-Math-model/cache-map/3_hrebtovo_T500_GK07_tif.spif");
-    // путь на рабочем компьютере
     this->cachePainter = new CachePainter(spifFile);
     //this->cachePainter = new CachePainter("H:/[26-12-2019] Workflow/openGLviewer/4_Kolomna_red_GK07_tif.spif");
 
     // первоначальная настройка параметров камеры
-    this->cachePainter->setCameraParameters(2.97, 0.0056, 960, 640);
+ //   this->cachePainter->setCameraParameters(2.97, 0.0056, 960, 640);
 
     // событие нажатия мышки
     this->isPressEvent = false;
     // выделение области на QWidget
-    this->isSelectAreaEvent = false;
+//    this->isSelectAreaEvent = false;
 
     this->xStartCursorPosition = 0;
     this->yStartCursorPosition = 0;
@@ -42,14 +39,14 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
     this->yPixelShift = 0;
 
     // updated 20.04.2020
-    this->currentAircraftLatitudeB = 0; // grad
-    this->currentAircraftLongitudeL = 0; // grad
+ //   this->currentAircraftLatitudeB = 0; // grad
+  //  this->currentAircraftLongitudeL = 0; // grad
 
-    this->currentAircraftAltitudeH = 0; // meters
+ //   this->currentAircraftAltitudeH = 0; // meters
 
-    this->currentAircraftRollGamma = 0;
-    this->currentAircraftPitchTheta = 0;
-    this->currentAircraftYawPsi = 0;
+ //   this->currentAircraftRollGamma = 0;
+ //   this->currentAircraftPitchTheta = 0;
+ //   this->currentAircraftYawPsi = 0;
 
     // подгружаем первоначальное изображение карты при первом открытии окна
     this->setFlightMapWidgetStartState();
@@ -74,9 +71,9 @@ void FlightMapWidget::setCurrentRoiImage(QImage roiImage) {
     this->currentRoiImage = roiImage;
 }
 
-void FlightMapWidget::savePrevoiusRoiImage(QImage roiImage) {
-    this->previousRoiImage = roiImage;
-}
+//void FlightMapWidget::savePrevoiusRoiImage(QImage roiImage) {
+//    this->previousRoiImage = roiImage;
+//}
 
 void FlightMapWidget::setFlightMapWidgetStartState() {
 
@@ -213,7 +210,7 @@ QString FlightMapWidget::getSpifFile()
 void FlightMapWidget::resetCachePainter()
 {
     this->cachePainter = new CachePainter(spifFile);
-    this->cachePainter->setCameraParameters(2.97, 0.0056, 960, 640);
+    //this->cachePainter->setCameraParameters(2.97, 0.0056, 960, 640);
 //    this->isPressEvent = false;
 //    this->isSelectAreaEvent = false;
 //    this->xStartCursorPosition = 0;
@@ -361,23 +358,23 @@ void FlightMapWidget::paintEvent(QPaintEvent *event) {
 
 
     // если пользователь выделяет необходимую прямоугольную область для ее увеличения
-    if (this->isSelectAreaEvent) {
+//    if (this->isSelectAreaEvent) {
 
-        if (this->xEndCursorPosition != 0 && this->yEndCursorPosition != 0) {
+//        if (this->xEndCursorPosition != 0 && this->yEndCursorPosition != 0) {
 
-            // отрисовываем полупрозрачный синий прямоугольник с белыми штрих-границами
-            QPen penOfArea;
-            penOfArea.setColor(Qt::white);
-            penOfArea.setStyle(Qt::DashLine);
-            widgetPainter.setPen(penOfArea);
-            widgetPainter.setBrush(QColor(0, 0, 70, 70)); // полупрозрачный синий
-            // прямоугольник от начала зажатия правой кнопки мыши до ее отпускания
-            widgetPainter.drawRect(this->xStartCursorPosition, this->yStartCursorPosition,
-                                   this->xEndCursorPosition - this->xStartCursorPosition,
-                                   this->yEndCursorPosition - this->yStartCursorPosition);
-        }
+//            // отрисовываем полупрозрачный синий прямоугольник с белыми штрих-границами
+//            QPen penOfArea;
+//            penOfArea.setColor(Qt::white);
+//            penOfArea.setStyle(Qt::DashLine);
+//            widgetPainter.setPen(penOfArea);
+//            widgetPainter.setBrush(QColor(0, 0, 70, 70)); // полупрозрачный синий
+//            // прямоугольник от начала зажатия правой кнопки мыши до ее отпускания
+//            widgetPainter.drawRect(this->xStartCursorPosition, this->yStartCursorPosition,
+//                                   this->xEndCursorPosition - this->xStartCursorPosition,
+//                                   this->yEndCursorPosition - this->yStartCursorPosition);
+//        }
 
-    }
+//    }
 
     widgetPainter.end();
 

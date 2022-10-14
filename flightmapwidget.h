@@ -34,18 +34,18 @@ private:
     QList<float> airSpeedData;
 
     // aircraft route // реальная траектория самолета
-    QPolygonF aircraftRoute;
+ //   QPolygonF aircraftRoute;
     // четырехугольник, наблюдаемый камерой
-    quadrilateral observedQuadrilateral;
+//    quadrilateral observedQuadrilateral;
     // QPolygon для отрисовки четырехугольника
-    QPolygon observedPolygon;
+ //   QPolygon observedPolygon;
     // изображение, наблюдаемое камерой - в отдельном окне
-    QImage currentObservedImage;
+ //   QImage currentObservedImage;
 
     // mocsan route // траектория Моксана
-    QPolygonF mocsanRoute;
+//    QPolygonF mocsanRoute;
     // aircraft route // траектория СПВС
-    QPolygonF airCalculatedRoute;
+//    QPolygonF airCalculatedRoute;
 
     //QVector<QPoint>
 
@@ -53,16 +53,16 @@ private:
     CachePainter *cachePainter;
 
     // Current spatial position of aircraft
-    double currentAircraftLatitudeB; // grad
-    double currentAircraftLongitudeL; // grad
+ //   double currentAircraftLatitudeB; // grad
+ //   double currentAircraftLongitudeL; // grad
 
-    double currentAircraftAltitudeH; // meters
+//    double currentAircraftAltitudeH; // meters
 
-    double currentAircraftRollGamma;
-    double currentAircraftPitchTheta;
-    double currentAircraftYawPsi;
+ //   double currentAircraftRollGamma;
+ //   double currentAircraftPitchTheta;
+ //   double currentAircraftYawPsi;
 
-    QImage previousRoiImage;
+ //   QImage previousRoiImage;
     // текущий Roi Image - фрагмент карты
     QImage currentRoiImage;
 
@@ -83,7 +83,7 @@ private:
     // press event
     bool isPressEvent;
     // режим/событие выбора необходимой прямоугольной области
-    bool isSelectAreaEvent;
+ //   bool isSelectAreaEvent;
 
     // for shift position tracking
     // начальное положение курсора
@@ -177,7 +177,7 @@ private:
   // задать текущее отображаемое изображение
   void setCurrentRoiImage(QImage roiImage);
   // сохранить предыдущее изображение
-  void savePrevoiusRoiImage(QImage roiImage);
+//  void savePrevoiusRoiImage(QImage roiImage);
 
   // настройка первоначальной позиции при первом открытии окна
   void setFlightMapWidgetStartState();

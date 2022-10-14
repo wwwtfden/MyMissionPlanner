@@ -89,21 +89,6 @@ public slots:
     // пересчет корректен только для малых dN и dE (не более нескольких десятков километров)
     void calcShiftToGEOLatLon(double B, double L, double dN, double dE, double &Bshift, double &Lshift);
 
-    // задать и получить параметры камеры (обычно устанавливаются один раз на весь полет)
-    void setCameraParameters(double focalLength, double pixelSize, int cameraMatrixWidth, int cameraMatrixHeight);
-    void getCameraParameters(double &focalLength, double &pixelSize, int &cameraMatrixWidth, int &cameraMatrixHeight);
-
-    // задать и получить пространственное положение ЛА (B, L в градусах; H в метрах; roll, pitch, yaw в градусах)
-    void setAircraftSpatialPosition(double B, double L, double H, double roll, double pitch, double yaw);
-    void getAircraftSpatialPosition(double &B, double &L, double &H, double &roll, double &pitch, double &yaw);
-
-    // получить координаты вершин наблюдаемого камерой четырехугольника
-    // предварительно вызвать setCameraParameters() и setAircraftSpatialPosition()
-    void getObservedQuadrilateral(quadrilateral &observedQuadrilateral);
-
-    // получить наблюдаемое камерой изображение
-    // предварительно вызвать setCameraParameters() и setAircraftSpatialPosition()
-    QImage getObservedImage();
 };
 
 #endif // CACHEPAINTER_H
