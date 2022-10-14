@@ -73,7 +73,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>250</width>
+            <width>260</width>
             <height>0</height>
            </size>
           </property>
@@ -88,16 +88,16 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>248</width>
-             <height>778</height>
+             <width>258</width>
+             <height>752</height>
             </rect>
            </property>
            <widget class="QWidget" name="widgetParent" native="true">
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>10</y>
-              <width>251</width>
+              <y>0</y>
+              <width>250</width>
               <height>101</height>
              </rect>
             </property>
@@ -273,7 +273,7 @@
      <x>0</x>
      <y>0</y>
      <width>1749</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
