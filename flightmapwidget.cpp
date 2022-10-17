@@ -60,6 +60,11 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
 
 }
 
+FlightMapWidget::~FlightMapWidget()
+{
+    delete cachePainter;
+}
+
 void FlightMapWidget::setCenterOfCachePainter(double lat, double lon){
     //int x,y;
     // cachePainter->convertCoordinatesToPixelsRoi(lat, lon, x, y);

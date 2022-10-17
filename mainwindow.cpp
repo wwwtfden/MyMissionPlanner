@@ -22,9 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget->setColumnWidth(13,60);
     ui->ShowMapWidget->getLayersRange(minRange, maxRange);
     ui->zoomSlider->setRange(minRange,maxRange);
-  //  ui->scrollAreaWidgetContents->setDisabled(1);
-  //  statusLayerLbl = new QLabel(this);
-  //  statusBar()->addWidget(statusLayerLbl);
     ui->zoomSlider->setValue(ui->ShowMapWidget->getCurrentLayer());
     headerLabels << "Команда" << "Param1" << "Param 2" << "Param 3" << "Param 4" << "Широта" << "Долгота" << "Высота" << "Удалить" << "Дистанция" << "Вверх" << "Вниз" << "Углы" << "Град, %";
     ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
@@ -46,24 +43,20 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->ShowMapWidget, &FlightMapWidget::layerWasChanged, this, &MainWindow::setSlider);
     connect(ui->addButton, &QPushButton::clicked, this, &MainWindow::addWp);
     connect(ui->ShowMapWidget, &FlightMapWidget::setLabelStatusBarText, ui->label, &QLabel::setText);
-    //connect(ui->ShowMapWidget, &FlightMapWidget::wpDeleted, this, &MainWindow::deleteWp);
-//    connect(ui->debugButton, &QPushButton::clicked, this, &MainWindow::clearLayout);
-  //  connect(MainWindow, &MainWindow::activateWindow, this, &MainWindow::tabClicked);
     connect(ui->ShowMapWidget, &FlightMapWidget::wpDeleted, this, &MainWindow::deleteWp);
     connect(ui->ShowMapWidget, &FlightMapWidget::wpAdded, this, &MainWindow::addWpWithData);
     connect(ui->ShowMapWidget, &FlightMapWidget::wpWithIndexAdded, this, &MainWindow::addWpWithIndex);
-//        connect(ui->ShowMapWidget, &WaypointWidget::lineEditLatChanged, this, &MainWindow::changeDataFromPanel);
  //   this->ui->actionSave->setDisabled(true); // деактивировать кнопку "Сохранить"
  //   this->ui->actionSave_As->setDisabled(true);
     connect(ui->ShowMapWidget, &FlightMapWidget::pointWasMoved, this, &MainWindow::moveWp);
     connect(ui->ShowMapWidget, &FlightMapWidget::pointMoveFinished, this, &MainWindow::wpMoved);
 
-        // создание элементов боковой панели
-        vlayout = new QVBoxLayout();
-        ui->scrollAreaWidgetContents->setLayout(vlayout);
-        ui->scrollAreaWidgetContents->setEnabled(1);
+    // создание элементов боковой панели
+    vlayout = new QVBoxLayout();
+    ui->scrollAreaWidgetContents->setLayout(vlayout);
+    ui->scrollAreaWidgetContents->setEnabled(1);
 
-        qDebug() << file;
+    qDebug() << file;
 }
 
 MainWindow::~MainWindow()
@@ -79,7 +72,6 @@ void MainWindow::slotOpenFileName() // слот по открытию файла
     this->file = new QFile(str);
     if (file->open(QIODevice::ReadOnly)) {
        m_strFileName = str;
-    // qDebug() << "File opened: " << m_strFileName;
        ui->label->setText("File opened: " + m_strFileName);
        MainWindow::setWindowTitle("Mission Planner 02 " + m_strFileName);
    //  waypointsList.clear(); // предварительная очистка
@@ -100,7 +92,6 @@ void MainWindow::slotOpenFileName() // слот по открытию файла
 
 void MainWindow::valueChanged (int &layer){ // сигнал от зум слайдера
     layer = ui->ShowMapWidget->getCurrentLayer();
- //   statusLayerLbl->setText("Current Layer " + QString(layer));
 }
 
 void MainWindow::avalueChanged(int layer) // слот изменяющий значения при сигнале с зум слайдера
@@ -111,44 +102,41 @@ void MainWindow::avalueChanged(int layer) // слот изменяющий зн�
 
 void MainWindow::userClicked(int row, int column) // Определяет нажатие на ячейку таблицы
 {
-   // curr_row = row;
-  //  qDebug() << curr_row;
     qDebug() << row;
-   // if (column == 1){
-        qDebug() << "Тип точки";
-        if (waypointsList.at(row)->show_pointtype() == 16){ // здесь в зависимости от выбранной команды в боксе и соответствия ей ряда устанавливаются хедеры таблицы
-            qDebug() << "Waypoint";
-            headerLabels.replace(1, "Delay");
-            headerLabels.replace(2, "");
-            headerLabels.replace(3, "");
-            headerLabels.replace(4, "");
-            ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
-        }
-        if (waypointsList.at(row)->show_pointtype() == 208){
-            qDebug() << "Do Parachute";
-            headerLabels.replace(1, "Enable");
-            headerLabels.replace(2, "");
-            headerLabels.replace(3, "");
-            headerLabels.replace(4, "");
-            ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
-        }
-        if (waypointsList.at(row)->show_pointtype() == 178){
-            qDebug() << "Do Change Speed";
-            headerLabels.replace(1, "");
-            headerLabels.replace(2, "Airspeed");
-            headerLabels.replace(3, "");
-            headerLabels.replace(4, "");
-            ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
+    qDebug() << "Тип точки";
+    if (waypointsList.at(row)->show_pointtype() == 16){ // здесь в зависимости от выбранной команды в боксе и соответствия ей ряда устанавливаются хедеры таблицы
+        qDebug() << "Waypoint";
+        headerLabels.replace(1, "Delay");
+        headerLabels.replace(2, "");
+        headerLabels.replace(3, "");
+        headerLabels.replace(4, "");
+        ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
     }
-        if (waypointsList.at(row)->show_pointtype() == 21){
-            qDebug() << "Land";
-            headerLabels.replace(1, "");
-            headerLabels.replace(2, "");
-            headerLabels.replace(3, "");
-            headerLabels.replace(4, "");
-            ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
-        }
-  //  }
+    if (waypointsList.at(row)->show_pointtype() == 208){
+        qDebug() << "Do Parachute";
+        headerLabels.replace(1, "Enable");
+        headerLabels.replace(2, "");
+        headerLabels.replace(3, "");
+        headerLabels.replace(4, "");
+        ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
+    }
+    if (waypointsList.at(row)->show_pointtype() == 178){
+        qDebug() << "Do Change Speed";
+        headerLabels.replace(1, "");
+        headerLabels.replace(2, "Airspeed");
+        headerLabels.replace(3, "");
+        headerLabels.replace(4, "");
+        ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
+}
+    if (waypointsList.at(row)->show_pointtype() == 21){
+        qDebug() << "Land";
+        headerLabels.replace(1, "");
+        headerLabels.replace(2, "");
+        headerLabels.replace(3, "");
+        headerLabels.replace(4, "");
+        ui->tableWidget->setHorizontalHeaderLabels(headerLabels);
+    }
+
 }
 
 void MainWindow::setSlider(int layer)
@@ -160,11 +148,8 @@ void MainWindow::updatePointTypeForWaypointListRow(int index)
 {
     int rowId = this->cmdList.indexOf((QComboBox*)QObject::sender());
     qDebug() << "MainWindow::updatePointTypeForWaypointListRow(int index)" << index;
-
     this->waypointsList.at(rowId)->write_pointtype( cmdNum( this->cmdList[rowId]->itemText(index) ) );
-
     qDebug()<< "waypointId: " << this->waypointsList.at(rowId)->show_num();
-
     qDebug() << rowId << ": " << waypointsList.at(rowId)->show_pointtype() << this->cmdList[rowId]->itemText(index);
     displaywpdata(1);
 }
@@ -172,21 +157,18 @@ void MainWindow::updatePointTypeForWaypointListRow(int index)
 
 void MainWindow::addWp()
 {
-  //  int i = waypointsList.count();
-  //  i++;
     Waypoint* waypoint = new Waypoint();
- //   waypoint->write_num(curr_row+1);
-      waypoint->write_num(waypointsList.count());
+    waypoint->write_num(waypointsList.count());
     waypoint->write_lat(ui->ShowMapWidget->stock_lat);
     waypoint->write_lon(ui->ShowMapWidget->stock_lon);
- //   this->waypointsList.append(waypoint);
     if (!waypointsList.isEmpty()) {
-        int tmpalt = waypointsList.at(waypointsList.count()-1)->show_alt();
+        float tmpalt = waypointsList.at(waypointsList.count()-1)->show_alt();
         waypoint->write_alt(tmpalt);
     }
     this->waypointsList.insert(waypointsList.count(), waypoint);
     displaywpdata(1);
-
+    // нужно высвободить память
+    delete waypoint;
 }
 
 void MainWindow::addWpWithData(double lat, double lon)
@@ -198,13 +180,15 @@ void MainWindow::addWpWithData(double lat, double lon)
     waypoint->write_lat(lat);
     waypoint->write_lon(lon);
     if (!waypointsList.isEmpty()) {
-        int tmpalt = waypointsList.at(waypointsList.count()-1)->show_alt();
+        float tmpalt = waypointsList.at(waypointsList.count()-1)->show_alt();
         waypoint->write_alt(tmpalt);
     }
     this->waypointsList.append(waypoint);
    // this->waypointsList.insert(waypointsList.count(), waypoint);
   //  resetIndex();
     displaywpdata(1);
+    // нужно высвободить память
+    delete waypoint;
 }
 
 void MainWindow::addWpWithIndex(double lat, double lon, int index)
@@ -215,12 +199,14 @@ void MainWindow::addWpWithIndex(double lat, double lon, int index)
     waypoint->write_lat(lat);
     waypoint->write_lon(lon);
     if (index > 0) {
-        int tmpalt = waypointsList.at(index-1)->show_alt();
+        float tmpalt = waypointsList.at(index-1)->show_alt();
         waypoint->write_alt(tmpalt);
     }
  //   this->waypointsList.append(waypoint);
     this->waypointsList.insert(index, waypoint);
     displaywpdata(1);
+    // нужно высвободить память
+    delete waypoint;
 }
 
 void MainWindow::tabClicked()
@@ -231,15 +217,11 @@ void MainWindow::tabClicked()
 
 void MainWindow::clearLayout()
 {
-double plat1 = ui->ShowMapWidget->stock_lat;
-double plon1 = ui->ShowMapWidget->stock_lon;
-double plat2 = waypointsList.at(0)->show_lat();
-double plon2 = waypointsList.at(0)->show_lon();
-qDebug() << ui->ShowMapWidget->dist_btw_points(plat1, plon1, plat2, plon2);
-
-//    for (int i = 0; i<waypointsList.count(); i++){
-//        qDebug() << waypointsList.at(i)->show_num() << waypointsList.at(i)->show_lat() << waypointsList.at(i)->show_lon() << waypointsList.at(i)->show_alt();
-//    }
+    double plat1 = ui->ShowMapWidget->stock_lat;
+    double plon1 = ui->ShowMapWidget->stock_lon;
+    double plat2 = waypointsList.at(0)->show_lat();
+    double plon2 = waypointsList.at(0)->show_lon();
+    qDebug() << ui->ShowMapWidget->dist_btw_points(plat1, plon1, plat2, plon2);
 }
 
 void MainWindow::deleteRowFromTable()
@@ -257,7 +239,6 @@ void MainWindow::deleteRowFromTable()
     vlayout->removeWidget(panelWidgetList[rowId]);
 
     // удалить информацию о waypoint из QList
- //   delete waypointsList[rowId];
     delete panelWidgetList[rowId];
     waypointsList.removeAt(rowId);
 
@@ -310,15 +291,12 @@ void MainWindow::updateDataFromPanel()
     displaywpdata(0);
     //displaywpdataWithoutUpdPanel();
 
-//    ui->ShowMapWidget->update();
-
 }
 
 void MainWindow::moveWp(double lat, double lon, int index)
 {
     this->waypointsList.at(index)->write_lat(lat);
     this->waypointsList.at(index)->write_lon(lon);
-    //ui->ShowMapWidget->repaint();
     displaywpdata(0);
 }
 
@@ -347,23 +325,20 @@ void MainWindow::downButton()
         resetIndex();
         displaywpdata(1);
         }
-
 }
 
 
 
-void MainWindow::slotSaveFile(){
+void MainWindow::slotSaveFile()
+{
     if (this->file == nullptr){
         slotSaveAs();
     }
     else {
-        //  qDebug() << m_strFileName;
-         // file->open(QIODevice::WriteOnly | QIODevice::Truncate);
           if (file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
               savewpdata(*file);
-           //   qDebug() << "File saved.";
               ui->label->setText("File saved.");
-                 file->close();
+                file->close();
     }
           else slotSaveAs();
 
@@ -371,21 +346,21 @@ void MainWindow::slotSaveFile(){
 
 }
 
-void MainWindow::slotSaveAs(){
+void MainWindow::slotSaveAs()
+{
     QString savefileas = QFileDialog::getSaveFileName(0,"Сохранить как...", "", "*.waypoints" );
     qDebug() << "savefileas" << savefileas;
     if (savefileas == "") savefileas = m_strFileName;
     this->file = new QFile(savefileas);
     if (file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
         savewpdata(*file);
-    //   qDebug() << "File saved.";
     ui->label->setText("File saved.");
 }
     file->close();
 }
 
-void MainWindow::slotCloseAll(){
- //   ui->tableWidget->setRowCount(0);
+void MainWindow::slotCloseAll()
+{
     qDebug() << "File closed" << file;
     MainWindow::setWindowTitle("Mission Planner 02 ");
   //  delete file; // удаляет указатель на файл
@@ -393,9 +368,6 @@ void MainWindow::slotCloseAll(){
     waypointsList.clear();
     ui->label->setText("File closed.");
     op = false;
-
-//    this->buttonList.clear();
-//    this->cmdList.clear();
 
     this->ui->actionSave->setDisabled(true);
     this->ui->actionSave_As->setDisabled(true);
@@ -417,18 +389,6 @@ void MainWindow::slotSelectSpif()
 {
     QString spifFileName;
     spifFileName = ui->ShowMapWidget->getSpifFile();
-//    bool ok;
-//    QString newSpifFileName = QInputDialog::getText(this,
-//                                 QString::fromUtf8("Путь к spif cache:"),
-//                                 QString::fromUtf8("Путь к spif cache:"),
-//                                 QLineEdit::Normal,
-//                                 spifFileName, &ok);
-//    if (ok && !newSpifFileName.isEmpty()){
-//        spifFileName = newSpifFileName;
-//        ui->ShowMapWidget->setSpifFile(spifFileName);
-//        ui->ShowMapWidget->resetCachePainter();
-//       }
-
     QString newSpifFileName = QFileDialog::getOpenFileName(0, "Путь к spif cache:", spifFileName, "*.spif");
     if (!newSpifFileName.isEmpty())
     {
@@ -516,12 +476,7 @@ void MainWindow::getwpdata(QFile &file){
             waypoint->write_automode(automode);
 
             this->waypointsList.append(waypoint);
-
-           // qDebug() << "NUM: " << num << '\n';
-           // qDebug() << "NUM: " << waypoint->show_num() << '\n';
-
-           // waypoint->write_num();
-
+            delete waypoint;
 
         }
     }
@@ -543,18 +498,12 @@ void MainWindow::displaywpdata(bool panel){
      {
          vertical << QString::number(i); // делаем список для отображения номеров строк в интерфейсе
 
-      //   ui->tableWidget->setItem(i,0, new QTableWidgetItem(QString::number(waypointsList[i]->show_num())));
-      //   ui->tableWidget->setItem(i,0, new QTableWidgetItem(QString::number(waypointsList.at(i)->show_pointtype())));
-
          QComboBox* switchBox = new QComboBox();  // комбобокс для выбора типа команды
          switchBox->setEditable(0);
          switchBox->addItems(cmdType);
          cmdList.append(switchBox); // для них предусмотрен отдельный массив
-       //  QString* typeName = new QString;
-       //  typeName = cmdName(waypointsList.at[i]->show_pointtype());
          switchBox->setCurrentText(cmdName(waypointsList.at(i)->show_pointtype())); // устанавливаем текущую позицию комбобокса
          ui->tableWidget->setCellWidget(i, 0, switchBox);
-       //  connect(switchBox, &QComboBox::currentIndexChanged, this, &MainWindow::cmdNum);
 
          ui->tableWidget->setItem(i,1, new QTableWidgetItem(QString("%1").arg(waypointsList.at(i)->show_param1(), 0, 'f', 8)));
          ui->tableWidget->setItem(i,2, new QTableWidgetItem(QString("%1").arg(waypointsList.at(i)->show_param2(), 0, 'f', 8)));
@@ -585,19 +534,15 @@ void MainWindow::displaywpdata(bool panel){
          connect(downPB, &QPushButton::clicked, this, &MainWindow::downButton);
          connect(delPB, &QPushButton::clicked, this, &MainWindow::deleteSelectedRow);
          connect(switchBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updatePointTypeForWaypointListRow(int)));
-         //connect(ui->tableWidget, SIGNAL(cellActivated(row, column)), this, SLOT(userClicked(row, column)));
-         //connect(this->switchBox, QComboBox::, this, SLOT(updatePointTypeForWaypointListRow(int)));
 
      }
      if (!waypointsList.isEmpty()) { calcDists(); calcHeights(); }
      setToolTipsForTable();
 
-   //  ui->tableWidget->blockSignals(false);
      ui->ShowMapWidget->clearWaypointsRoute();
      ui->ShowMapWidget->setWaypointsRoute(this->waypointsList); // прорисовка маршрута на карту
      ui->ShowMapWidget->update();
      connect(ui->tableWidget, SIGNAL(cellClicked(int, int)), this, SLOT(userClicked(int, int)));
-    // connect(ui->tableWidget, SIGNAL(cellActivated(int, int)), this, SLOT(userClicked(int, int)));
      qDebug()<< vertical;
      ui->tableWidget->setVerticalHeaderLabels(vertical);
      ui->tableWidget->blockSignals(false);
@@ -670,9 +615,7 @@ void MainWindow::setToolTipsForTable()
 void MainWindow::slotZoom()
 {
     QString sign = qobject_cast<QPushButton *>(sender())->objectName();
-   // qDebug() << sign;
     ui->ShowMapWidget->zoomFunc(&sign);
-  //  ui->zoomSlider->setValue(ui->ShowMapWidget->getCurrentLayer());
     setSlider(ui->ShowMapWidget->getCurrentLayer());
 }
 
@@ -750,7 +693,6 @@ void MainWindow::updPanel()
                 WaypointWidget *widget = new WaypointWidget(ui->frameParent);
                 widget->setWaypointWidgetData(waypointsList.at(i)->show_num(), waypointsList.at(i)->show_lat(), waypointsList.at(i)->show_lon(), waypointsList.at(i)->show_alt(), waypointsList.at(i)->show_pointtype());
                 widget->setFrameStyle(QFrame::Box);
-                //connect(widget->labelDelete, SIGNAL(clicked()), this, SLOT(deleteRowFromTable()));
                 connect(widget, SIGNAL(labelDeleteClicked()), this, SLOT(deleteRowFromTable()));
                 connect(widget, SIGNAL(lineEditChanged()), this, SLOT(updateDataFromPanel()));
                 connect(widget, SIGNAL(switchBoxPanelChanged(int)), this, SLOT(updateDataFromPanel()));

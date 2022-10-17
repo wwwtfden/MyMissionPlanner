@@ -16,6 +16,7 @@ class FlightMapWidget : public QWidget {
 
 public:
     FlightMapWidget(QWidget *parent);
+    ~FlightMapWidget();
 
 private:
 //    virtual void contextMenuEvent(QContextMenuEvent* pe)
