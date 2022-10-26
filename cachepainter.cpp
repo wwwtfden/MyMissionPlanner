@@ -5,8 +5,8 @@
 #include <QFileInfo>
 #include <QDebug>
 
-#include <opencv/cv.h>
-#include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv/cv.h>
+//#include <opencv2/imgproc/imgproc.hpp>
 
 #define radiusEarth (6378137.0) //радиус Земли для сферического Меркатора. Равен большему радиусу эллипсоида WGS-84
 
