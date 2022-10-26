@@ -19,9 +19,14 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
         }
     // подгрузка карты/растра
     this->cachePainter = new CachePainter(spifFile);
+    //this->cachePainter = new CachePainter("H:/[26-12-2019] Workflow/openGLviewer/4_Kolomna_red_GK07_tif.spif");
+
+
 
     // событие нажатия мышки
     this->isPressEvent = false;
+    // выделение области на QWidget
+//    this->isSelectAreaEvent = false;
 
     this->xStartCursorPosition = 0;
     this->yStartCursorPosition = 0;
@@ -33,7 +38,6 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
     this->yPixelShift = 0;
 
 
-
     // подгружаем первоначальное изображение карты при первом открытии окна
     this->setFlightMapWidgetStartState();
 
@@ -42,15 +46,14 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
 
     this->planePixmap = QPixmap(":/icons/resources/icons/fixed-wings-icon.png").scaled(64, 64);
 
+    //this->observedImageInSeparateWindow = QImage("E:/20-03-2020-Math-model/defaultObservedImage.bmp");
 
-}
-
-FlightMapWidget::~FlightMapWidget()
-{
-    delete cachePainter;
 }
 
 void FlightMapWidget::setCenterOfCachePainter(double lat, double lon){
+    //int x,y;
+    // cachePainter->convertCoordinatesToPixelsRoi(lat, lon, x, y);
+    // cachePainter->setCenterRoi(x,y);
     cachePainter->setCenterRoi(lat, lon);
 }
 
@@ -58,17 +61,21 @@ void FlightMapWidget::setCurrentRoiImage(QImage roiImage) {
     this->currentRoiImage = roiImage;
 }
 
+//void FlightMapWidget::savePrevoiusRoiImage(QImage roiImage) {
+//    this->previousRoiImage = roiImage;
+//}
 
 void FlightMapWidget::setFlightMapWidgetStartState() {
 
     cachePainter->setLayer(17); // текущий слой
-
 
     cachePainter->getCenterCache(this->currentBCenterRoi, this->currentLCenterRoi);
 
     // настраиваем текущий центр QImage
     cachePainter->setCenterRoi(this->currentBCenterRoi, this->currentLCenterRoi);
     cachePainter->setRoiSize(this->width(), this->height()); // задаем для искомого изображения карты ширину и высоту QWidget'a
+
+    //cachePainter->setRoiSize(1920, 1200); // разрешение QImage
 
     qDebug() << "setFlightMapWidgetStartState()" << this->xPixelPosition << "; " << this->yPixelPosition;
 }
@@ -100,6 +107,8 @@ void FlightMapWidget::setWaypointsRoute(QList<Waypoint*> waypointsList) {
     }
     qDebug() << airSpeedData;
 }
+
+
 
 
 int FlightMapWidget::checkIndex()
@@ -174,6 +183,7 @@ QString FlightMapWidget::getSpifFile()
 void FlightMapWidget::resetCachePainter()
 {
     this->cachePainter = new CachePainter(spifFile);
+
     this->setFlightMapWidgetStartState();
     this->setMouseTracking(true);
     this->planePixmap = QPixmap(":/icons/resources/icons/fixed-wings-icon.png").scaled(64, 64);
@@ -209,8 +219,10 @@ void FlightMapWidget::showWaypointsRoute(QPainter &widgetPainter) {
         widgetPainter.drawText(firstPoint.x()+30, firstPoint.y()-10, "Alt: " + QString::number(altsData.at(0)));     // отрисовка высоты
         widgetPainter.drawText(firstPoint.x()+30, firstPoint.y(), "Spd: -");
         widgetPainter.setFont(waypointsNumberFont);
-        bool flagdef = 1;
+        bool flagdef = 1; // дальше конкретный быдлокод
         for(int i = 0; i < this->waypointsRoute.count() - 1; i++) {
+            //qDebug() << "Waypoints 0" << this->waypointsRoute.at(i).x() << "; " << this->waypointsRoute.at(i).y();
+            //qDebug() << "Waypoints 1" << this->waypointsRoute.at(i+1).x() << "; " << this->waypointsRoute.at(i+1).y();
 
             // Waypoints route [B, L] --> QWidget [x, y]
             this->cachePainter->convertCoordinatesToPixelsRoi(this->waypointsRoute.at(i).x(), this->waypointsRoute.at(i).y(),
@@ -239,6 +251,7 @@ void FlightMapWidget::showWaypointsRoute(QPainter &widgetPainter) {
 
             if (airSpeedData.at(i+1) == 0.0 && flagdef) { widgetPainter.drawText(point1.x()+30, point1.y(), "Spd: -"); }
             else { widgetPainter.drawText(point1.x()+30, point1.y(), "Spd: " + QString::number(airSpeedData.at(i+1))); flagdef = 0; }
+
 
 
         } // for
@@ -282,6 +295,7 @@ void FlightMapWidget::paintEvent(QPaintEvent *event) {
 
     // отрисовка заданной траектории
     this->showWaypointsRoute(widgetPainter);
+
 
 
 
@@ -356,11 +370,25 @@ void FlightMapWidget::mouseMoveEvent(QMouseEvent *event) {
     this->cachePainter->convertPixelsRoiToCoordinates(this->xCursorPosition, this->yCursorPosition,
                                                       this->BCursorPosition, this->LCursorPosition);
 
+//    emit this->setLabelStatusBarText(QString("B:  %1°   L:  %2°     layerZ:  %3")
+//                                     .arg(this->BCursorPosition, 0, 'f', 6)
+//                                     .arg(this->LCursorPosition, 0, 'f', 6)
+//                                     .arg(this->cachePainter->getLayer()));
+
+ //   emit this->setLabelStatusBarText(QString("Текущий слой: %1").arg(this->cachePainter->getLayer()));
     emit this->setLabelStatusBarText(QString("Широта:  %1°   Долгота:  %2°   Текущий слой:  %3")
                                      .arg(this->BCursorPosition, 0, 'f', 6)
                                      .arg(this->LCursorPosition, 0, 'f', 6)
                                      .arg(this->cachePainter->getLayer()));
 
+
+    // Пробуем отображать Tooltip
+
+//    for (int i = 0; i<waypointsRoute.count(); i++){
+//        double currentX = waypointsRoute.at(i).x();
+//        double currentY = waypointsRoute.at(i).y();
+//        qDebug() << currentX << currentY;
+//    }
 
 }
 
@@ -475,6 +503,9 @@ void FlightMapWidget::mouseReleaseEvent(QMouseEvent *event) {
 
 
         }
+        // break;
+
+
 
     }
     setCursor(Qt::ArrowCursor);
@@ -538,6 +569,7 @@ void FlightMapWidget::clickCenterMapButton() {
 
     cachePainter->setLayer(17); // текущий слой
 
+    // координаты церкви в Хребтово
     this->currentBCenterRoi = stock_lat;
     this->currentLCenterRoi = stock_lon;
 
@@ -556,7 +588,7 @@ void FlightMapWidget::clickCenterMapButton() {
 
 }
 
-void FlightMapWidget::slotMenuActivated(QAction* pAction) //когда нужно меню без ППМ
+void FlightMapWidget::slotMenuActivated(QAction* pAction)
 {
        // if (pAction->text() == "&Add"){
        //     qDebug() << "Add";
@@ -570,7 +602,7 @@ void FlightMapWidget::slotMenuActivated(QAction* pAction) //когда нужн�
 
 }
 
-void FlightMapWidget::slotMenuWithPointActivated(QAction* pAction) //когда приходит ППМ
+void FlightMapWidget::slotMenuWithPointActivated(QAction* pAction)
 {
 
     qDebug() << "Add " << addPoint->x() << " " << addPoint->y();
@@ -598,10 +630,19 @@ void FlightMapWidget::slotMenuWithPointActivated(QAction* pAction) //когда 
 }
 
 
-//
 
 
-void FlightMapWidget::zoomFunc(QString* sign){ //здесь все что касается зуммирования
+//void FlightMapWidget::setImage(QImage newImage) {
+//    this->currentImage = newImage;
+//}
+
+
+
+void FlightMapWidget::zoomFunc(QString* sign){
+  //  int rowId = buttonList.indexOf((QPushButton*)QObject::sender());
+//   QString sign = qobject_cast<QPushButton *>(sender())->objectName();
+
+//            qDebug() << sign;
 
     int minLayer, maxLayer;
     cachePainter->getLayersRange(minLayer, maxLayer);
@@ -625,7 +666,7 @@ void FlightMapWidget::zoomFunc(QString* sign){ //здесь все что кас
 }
 
 
-void FlightMapWidget::getLayersRange(int &minLayer, int &maxLayer){ //сколько слоев в геотифе
+void FlightMapWidget::getLayersRange(int &minLayer, int &maxLayer){
     cachePainter->getLayersRange(minLayer, maxLayer);
 }
 
@@ -639,7 +680,7 @@ void FlightMapWidget::setLayer(int layer)
     cachePainter->setLayer(layer);
 }
 
-double FlightMapWidget::dist_btw_points(double lat1, double lon1, double lat2, double lon2) //расстояние между точками
+double FlightMapWidget::dist_btw_points(double lat1, double lon1, double lat2, double lon2)
 {
     double pi = 3.14159265358979;
     double rad = 6371;
@@ -657,7 +698,7 @@ double FlightMapWidget::dist_btw_points(double lat1, double lon1, double lat2, d
 
 }
 
-float FlightMapWidget::angle_btw_alts(float alt1, float alt2, float dist) //дельта высот
+float FlightMapWidget::angle_btw_alts(float alt1, float alt2, float dist)
 {
   //  if (alt1 == alt2) { return 0; }
     double pi = 3.14159265358979;

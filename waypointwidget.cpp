@@ -47,6 +47,9 @@ WaypointWidget::WaypointWidget(QWidget *parent)
     valuesGridLayout = new QGridLayout();
 
     labelIndexValue = new QLabel();
+
+    //labelLatitudeValue = new QLabel();
+    //labelLatitudeValue->setText("0.0");
     lineLatitudeValue = new QLineEdit();
     lineLongitudeValue = new QLineEdit();
     lineAltitudeValue = new QLineEdit();
@@ -56,17 +59,31 @@ WaypointWidget::WaypointWidget(QWidget *parent)
     switchBoxPanel->setFocusPolicy(Qt::StrongFocus);
     switchBoxPanel->installEventFilter(new MouseWheelWidgetAdjustmentGuard(switchBoxPanel));
 
+
+//    labelLongitudeValue = new QLabel();
+//    labelLongitudeValue->setText("0.0");
+
+//    labelAltitudeValue = new QLabel();
+//    labelAltitudeValue->setText("0.0");
+
     valuesGridLayout->addWidget(labelIndexValue);
+//    valuesGridLayout->addWidget(labelLatitudeValue);
+//    valuesGridLayout->addWidget(labelLongitudeValue);
+//    valuesGridLayout->addWidget(labelAltitudeValue);
+
     valuesGridLayout->addWidget(lineLatitudeValue);
     valuesGridLayout->addWidget(lineLongitudeValue);
     valuesGridLayout->addWidget(lineAltitudeValue);
     valuesGridLayout->addWidget(switchBoxPanel);
 
+ //   valuesGridLayout->add
+
     QGridLayout *gridLayoutForDelete = new QGridLayout();
     gridLayoutForDelete->addWidget(labelDelete);
-
+   // gridLayoutForDelete->setVerticalSpacing(2);
     // общий layout
     generalGridLayout = new QGridLayout();
+
     generalGridLayout->addLayout(labelsGridLayout, 0, 0);
     generalGridLayout->addLayout(valuesGridLayout, 0, 1);
     generalGridLayout->addLayout(gridLayoutForDelete, 1, 0);
@@ -81,9 +98,12 @@ WaypointWidget::WaypointWidget(QWidget *parent)
     connect(lineAltitudeValue, SIGNAL(editingFinished()), this, SIGNAL(lineEditChanged()));
     connect(switchBoxPanel, SIGNAL(currentIndexChanged(int)), this, SIGNAL(switchBoxPanelChanged(int)));
 }
+WaypointWidget::~WaypointWidget(){
+//    int qindex; // порядковый номер waypoint'а
 
-WaypointWidget::~WaypointWidget()
-{
+//    delete qlat; // широта
+//    delete qlon; // долгота
+//    delete qalt; // высота
 
     delete labelIndex;
     delete labelLatitude;
@@ -91,19 +111,23 @@ WaypointWidget::~WaypointWidget()
     delete labelAltitude;
     delete labelDelete;
     delete labelSwitchBoxPanel;
+ //   delete cmdTypePanel;
+
     delete valuesGridLayout;
     delete labelIndexValue;
+//    delete labelLatitudeValue;
+//    delete labelLongitudeValue;
+//    delete labelAltitudeValue;
     delete generalGridLayout;
+
     delete lineLatitudeValue;
     delete lineLongitudeValue;
     delete lineAltitudeValue;
     delete switchBoxPanel;
-
 };
 
 void WaypointWidget::setWaypointWidgetData(int index, double lat, double lon, float alt, int pointtype)
 {
-
     qlat = lat;
     qindex = index;
     qlon = lon;
@@ -111,11 +135,14 @@ void WaypointWidget::setWaypointWidgetData(int index, double lat, double lon, fl
     qindex = index;
     qpointtype = pointtype;
     labelIndexValue->setText(QString::number(qindex));
-    lineLatitudeValue->setText(QString::number(qlat));
-    lineLongitudeValue->setText(QString::number(qlon));
-    lineAltitudeValue->setText(QString::number(qalt));
-    switchBoxPanel->setCurrentText(setPointtypeForWgt(qpointtype));
+//    labelLatitudeValue->setText(QString::number(qlat));
+//    labelLongitudeValue->setText(QString::number(qlon));
+//    labelAltitudeValue->setText(QString::number(qalt));
 
+        lineLatitudeValue->setText(QString::number(qlat));
+        lineLongitudeValue->setText(QString::number(qlon));
+        lineAltitudeValue->setText(QString::number(qalt));
+        switchBoxPanel->setCurrentText(setPointtypeForWgt(qpointtype));
 }
 
 void WaypointWidget::resetFocus()

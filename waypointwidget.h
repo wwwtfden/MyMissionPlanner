@@ -38,12 +38,19 @@ private:
     float qalt; // высота
     int qpointtype; // тип команды
 
+
+
     QGridLayout *valuesGridLayout;
     QLabel *labelIndexValue;
+//    QLabel *labelLatitudeValue;
+//    QLabel *labelLongitudeValue;
+//    QLabel *labelAltitudeValue;
+
     QLineEdit *lineLatitudeValue;
     QLineEdit *lineLongitudeValue;
     QLineEdit *lineAltitudeValue;
     QComboBox *switchBoxPanel;
+
     QGridLayout *generalGridLayout;
 
 public slots:

@@ -38,24 +38,24 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui
-INCLUDEPATH += C:\libraries\opencv_2.4.13\build\include
+INCLUDEPATH += E:\opencv_2.4.13\build\include
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 CONFIG(debug, debug|release) {
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_highgui2413d.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_imgproc2413d.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_core2413d.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_features2d2413d.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_nonfree2413d.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_highgui2413d.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_imgproc2413d.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_core2413d.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_features2d2413d.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_nonfree2413d.lib
 } else {
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_highgui2413.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_imgproc2413.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_core2413.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_features2d2413.lib
-    LIBS += C:\libraries\opencv_2.4.13\build\x64\vc14\lib\opencv_nonfree2413.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_highgui2413.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_imgproc2413.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_core2413.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_features2d2413.lib
+    LIBS += E:\opencv_2.4.13\build\x64\vc14\lib\opencv_nonfree2413.lib
 }
 
 RESOURCES += \
