@@ -209,7 +209,7 @@ void FlightMapWidget::showWaypointsRoute(QPainter &widgetPainter) {
         widgetPainter.drawText(firstPoint.x()+30, firstPoint.y()-10, "Alt: " + QString::number(altsData.at(0)));     // отрисовка высоты
         widgetPainter.drawText(firstPoint.x()+30, firstPoint.y(), "Spd: -");
         widgetPainter.setFont(waypointsNumberFont);
-        bool flagdef = 1; // дальше конкретный быдлокод
+        bool flagdef = 1;
         for(int i = 0; i < this->waypointsRoute.count() - 1; i++) {
 
             // Waypoints route [B, L] --> QWidget [x, y]
