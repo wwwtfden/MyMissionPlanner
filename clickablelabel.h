@@ -10,6 +10,7 @@ signals:
     void clicked();
 public:
     ClickableLabel();
+    ~ClickableLabel();
    void mousePressEvent(QMouseEvent* event);
    using QLabel::QLabel;
 };

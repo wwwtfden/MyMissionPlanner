@@ -3,10 +3,8 @@
 
 #include <QWidget>
 #include <QtWidgets>
-//#include "ui_flightmapwindow.h"
 #include "cachepainter.h"
 #include "waypoint.h"
-//#include "observedimagewidget.h"
 #include <QVector>
 #include <QPointF>
 
@@ -16,6 +14,7 @@ class FlightMapWidget : public QWidget {
 
 public:
     FlightMapWidget(QWidget *parent);
+    ~FlightMapWidget();
 
 private:
 //    virtual void contextMenuEvent(QContextMenuEvent* pe)
@@ -33,40 +32,14 @@ private:
     QList<float> altsData;
     QList<float> airSpeedData;
 
-    // aircraft route // реальная траектория самолета
- //   QPolygonF aircraftRoute;
-    // четырехугольник, наблюдаемый камерой
-//    quadrilateral observedQuadrilateral;
-    // QPolygon для отрисовки четырехугольника
- //   QPolygon observedPolygon;
-    // изображение, наблюдаемое камерой - в отдельном окне
- //   QImage currentObservedImage;
-
-    // mocsan route // траектория Моксана
-//    QPolygonF mocsanRoute;
-    // aircraft route // траектория СПВС
-//    QPolygonF airCalculatedRoute;
-
-    //QVector<QPoint>
 
     // отрисовщик фрагмента карты
     CachePainter *cachePainter;
 
-    // Current spatial position of aircraft
- //   double currentAircraftLatitudeB; // grad
- //   double currentAircraftLongitudeL; // grad
-
-//    double currentAircraftAltitudeH; // meters
-
- //   double currentAircraftRollGamma;
- //   double currentAircraftPitchTheta;
- //   double currentAircraftYawPsi;
 
  //   QImage previousRoiImage;
     // текущий Roi Image - фрагмент карты
     QImage currentRoiImage;
-
-    QPixmap planePixmap; // картинка самолета
     QTransform transform; // для поворота картинки на курсовой угол
 
     double previousBCenterRoi;
@@ -99,7 +72,7 @@ private:
     int yPixelShift;
 
     // для конвертации широты+долготы в пиксели QWidget'a
-    // в данный момент для отрисовки Хребтовского полигона Алмаз-Антея в виде красного кружка
+    // в данный момент для отрисовки тестового полигона в виде красного кружка
     // и при отрисовке маршрута
 
     int xPixelPosition;
@@ -155,15 +128,6 @@ public:
 
   // настройка заданного маршрута (выбор и конвертация маршрута из формата QList<PPM*> в QPolygonF)
   void setWaypointsRoute(QList<Waypoint*> waypointsList);
-  // обновить реальную траекторию самолета
-//  void updateAircraftRoute(QPointF newCoordinates);
-  // обновить текущее пространственное положение самолета
-//  void updateAircraftSpatialPosition(double currentLatitudeB, double currentLongitudeL, double currentAltitudeH, double currentRollGamma, double currentPitchTheta, double currentYawPsi);
-
-  // обновить траекторию полета моксана
-//  void updateMocsanRoute(QPointF newCoordinates);
-  // обновить траекторию полета СПВС
-//  void updateAirCalculatedRoute(QPointF newCoordinates);
 
   int checkIndex();
   double checkDist();
@@ -185,22 +149,7 @@ private:
   // отрисовка заданного маршрута
   void showWaypointsRoute(QPainter &widgetPainter);
 
-  // отрисовка реальной траектории самолета
-//  void showAircraftRoute(QPainter &widgetPainter);
-
-//  void showMocsanRoute(QPainter &widgetPainter);
-
-//  void showAirCalculatedRoute(QPainter &widgetPainter);
-
-  // отрисовка четырехугольника, наблюдаемого камерой
-//  void showObservedQuadrilateral(QPainter &widgetPainter);
-
 public:
-  // настроить указатель на обновляемое изображение
-  //void setObservedImageInSeparateWindowPointer(QImage &observedImageInSeparateWindow);
-
-  // обновлять изображение, наблюдаемое камерой, в отдельном окне
-//  void updateObservedImageInSeparateWindow(QImage &observedImageInSeparateWindow);
   QPointF* addPoint;
 //  QPolygonF waypointsRoute;
 

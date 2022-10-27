@@ -19,7 +19,7 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
         }
     // подгрузка карты/растра
     this->cachePainter = new CachePainter(spifFile);
-    //this->cachePainter = new CachePainter("H:/[26-12-2019] Workflow/openGLviewer/4_Kolomna_red_GK07_tif.spif");
+
 
 
 
@@ -44,16 +44,16 @@ FlightMapWidget::FlightMapWidget(QWidget *parent)
     // разрешаем отслеживание курсора
     this->setMouseTracking(true);
 
-    this->planePixmap = QPixmap(":/icons/resources/icons/fixed-wings-icon.png").scaled(64, 64);
+}
 
-    //this->observedImageInSeparateWindow = QImage("E:/20-03-2020-Math-model/defaultObservedImage.bmp");
-
+FlightMapWidget::~FlightMapWidget()
+{
+    delete pmnu;
+    delete pmnu2;
+    delete addPoint;
 }
 
 void FlightMapWidget::setCenterOfCachePainter(double lat, double lon){
-    //int x,y;
-    // cachePainter->convertCoordinatesToPixelsRoi(lat, lon, x, y);
-    // cachePainter->setCenterRoi(x,y);
     cachePainter->setCenterRoi(lat, lon);
 }
 
@@ -61,9 +61,6 @@ void FlightMapWidget::setCurrentRoiImage(QImage roiImage) {
     this->currentRoiImage = roiImage;
 }
 
-//void FlightMapWidget::savePrevoiusRoiImage(QImage roiImage) {
-//    this->previousRoiImage = roiImage;
-//}
 
 void FlightMapWidget::setFlightMapWidgetStartState() {
 
@@ -121,18 +118,13 @@ int FlightMapWidget::checkIndex()
     double dist = 9999999;
     qDebug() << "checkIndex()" << xsp << ysp;
     for (int i = 0; i < waypointsRoute.count(); i++){
-//            int tmpx = abs(xStartCursorPosition - waypointsRoute.at(i).x());
-//            int tmpy = abs(yStartCursorPosition - waypointsRoute.at(i).y());
             double tmpx, tmpy;
             this->cachePainter->convertPixelsRoiToCoordinates(this->waypointsRoute.at(i).x(), this->waypointsRoute.at(i).y(), tmpx, tmpy);
             tmpx = this->waypointsRoute.at(i).x();
             tmpy = this->waypointsRoute.at(i).y();
-         //   qDebug() << "WP" << i << "coords " << this->waypointsRoute.at(i).x() << this->waypointsRoute.at(i).y();
              qDebug() << "WP pix" << i << "coords " << tmpx << tmpy;
             double tmp1x = abs(xsp - tmpx);
             double tmp1y = abs(ysp - tmpy);
-//            double tmpdist = (tmp1x*tmp1x)+(tmp1y*tmp1y);
-//            tmpdist = sqrt(tmpdist);
             double tmpdist = sqrt((tmp1x*tmp1x)+(tmp1y*tmp1y));
             qDebug() << "tmpdist" << i << tmpdist;
             if (tmpdist < dist){
@@ -150,7 +142,6 @@ double FlightMapWidget::checkDist()
     this->cachePainter->convertPixelsRoiToCoordinates(xStartCursorPosition, yStartCursorPosition, xsp ,ysp);
     int bestindex = waypointsRoute.count();
     double dist = 9999999;
-   // qDebug() << "checkIndex()" << xsp << ysp;
     for (int i = 0; i < waypointsRoute.count(); i++){
             double tmpx, tmpy;
             this->cachePainter->convertPixelsRoiToCoordinates(this->waypointsRoute.at(i).x(), this->waypointsRoute.at(i).y(), tmpx, tmpy);
@@ -186,7 +177,6 @@ void FlightMapWidget::resetCachePainter()
 
     this->setFlightMapWidgetStartState();
     this->setMouseTracking(true);
-    this->planePixmap = QPixmap(":/icons/resources/icons/fixed-wings-icon.png").scaled(64, 64);
 }
 
 
@@ -221,8 +211,6 @@ void FlightMapWidget::showWaypointsRoute(QPainter &widgetPainter) {
         widgetPainter.setFont(waypointsNumberFont);
         bool flagdef = 1; // дальше конкретный быдлокод
         for(int i = 0; i < this->waypointsRoute.count() - 1; i++) {
-            //qDebug() << "Waypoints 0" << this->waypointsRoute.at(i).x() << "; " << this->waypointsRoute.at(i).y();
-            //qDebug() << "Waypoints 1" << this->waypointsRoute.at(i+1).x() << "; " << this->waypointsRoute.at(i+1).y();
 
             // Waypoints route [B, L] --> QWidget [x, y]
             this->cachePainter->convertCoordinatesToPixelsRoi(this->waypointsRoute.at(i).x(), this->waypointsRoute.at(i).y(),
@@ -232,9 +220,6 @@ void FlightMapWidget::showWaypointsRoute(QPainter &widgetPainter) {
 
             QPointF point0(this->xPixelPosition, this->yPixelPosition), point1(this->x1PixelPosition, this->y1PixelPosition);
 
-            //qDebug() << "Points 0" << point0.x() << "; " << point0.y();
-            //qDebug() << "Points 1" << point1.x() << "; " << point1.y();
-
             widgetPainter.setPen(QPen(Qt::cyan, 2));
             widgetPainter.setBrush(Qt::cyan);
             widgetPainter.drawLine(point0, point1);
@@ -242,8 +227,6 @@ void FlightMapWidget::showWaypointsRoute(QPainter &widgetPainter) {
             widgetPainter.drawEllipse(point1.x()-4, point1.y()-4, 8, 8);
             widgetPainter.setPen(QPen(Qt::yellow, 2));
             widgetPainter.setBrush(Qt::yellow);
-
-        //    widgetPainter.drawText(point1, QString::number(i+1));
             widgetPainter.setFont(waypointsNumberFont);
             widgetPainter.drawText(point1.x()+25, point1.y()-25, QString::number(i+1));
             widgetPainter.setFont(paramsFont);
@@ -284,20 +267,13 @@ void FlightMapWidget::paintEvent(QPaintEvent *event) {
 
     widgetPainter.setPen(Qt::red);
 
-    // отрисовка в виде красного кружка
-    // координаты Хребтовского полигона Алмаз-Антея
+    // отрисовка в виде красного кружка координат базы (подставить свои)
     cachePainter->convertCoordinatesToPixelsRoi(56.587371, 38.274083, this->xPixelPosition, this->yPixelPosition); // пересчитываем координаты в пиксели QWidget'a
     widgetPainter.drawEllipse(QPointF(this->xPixelPosition, this->yPixelPosition), 10, 10);
     //qDebug() << "QWidget -> xPixelPosition ; yPixelPosition : " << this->xPixelPosition << "; " << this->yPixelPosition;
 
-
-
-
     // отрисовка заданной траектории
     this->showWaypointsRoute(widgetPainter);
-
-
-
 
     widgetPainter.end();
 
@@ -369,26 +345,10 @@ void FlightMapWidget::mouseMoveEvent(QMouseEvent *event) {
 
     this->cachePainter->convertPixelsRoiToCoordinates(this->xCursorPosition, this->yCursorPosition,
                                                       this->BCursorPosition, this->LCursorPosition);
-
-//    emit this->setLabelStatusBarText(QString("B:  %1°   L:  %2°     layerZ:  %3")
-//                                     .arg(this->BCursorPosition, 0, 'f', 6)
-//                                     .arg(this->LCursorPosition, 0, 'f', 6)
-//                                     .arg(this->cachePainter->getLayer()));
-
- //   emit this->setLabelStatusBarText(QString("Текущий слой: %1").arg(this->cachePainter->getLayer()));
     emit this->setLabelStatusBarText(QString("Широта:  %1°   Долгота:  %2°   Текущий слой:  %3")
                                      .arg(this->BCursorPosition, 0, 'f', 6)
                                      .arg(this->LCursorPosition, 0, 'f', 6)
                                      .arg(this->cachePainter->getLayer()));
-
-
-    // Пробуем отображать Tooltip
-
-//    for (int i = 0; i<waypointsRoute.count(); i++){
-//        double currentX = waypointsRoute.at(i).x();
-//        double currentY = waypointsRoute.at(i).y();
-//        qDebug() << currentX << currentY;
-//    }
 
 }
 
@@ -482,28 +442,20 @@ void FlightMapWidget::mouseReleaseEvent(QMouseEvent *event) {
                // QPointF point(this->xStartCursorPosition, this->yStartCursorPosition);
                 connect(pmnu, SIGNAL(triggered(QAction*)), SLOT(slotMenuActivated(QAction*)));
                 pmnu->exec(event->globalPos());
-                //connect(pmnu, SIGNAL(triggered(QAction*)), SIGNAL(wpDeleted));
-
-                //connect(pmnu, SIGNAL(triggered(QAction*)), , SLOT(deleteWp));
-
                 flagadd = 1;
                 break;
             }
 
         }
         if ((!flagadd) && (!flag_moved)){
-
-      //  addPoint(this->xStartCursorPosition, this->yStartCursorPosition) = new QPointF;
             addPoint->setX(this->xStartCursorPosition);
             addPoint->setY(this->yStartCursorPosition);
-        pmnu2 = new QMenu(this);
-         pmnu2->addAction("&Add");
-         connect(pmnu2, SIGNAL(triggered(QAction*)), SLOT(slotMenuWithPointActivated(QAction*)));
-         pmnu2->exec(event->globalPos());
-
-
+            pmnu2 = new QMenu(this);
+            pmnu2->addAction("&Add");
+            connect(pmnu2, SIGNAL(triggered(QAction*)), SLOT(slotMenuWithPointActivated(QAction*)));
+            pmnu2->exec(event->globalPos());
         }
-        // break;
+
 
 
 
@@ -519,7 +471,6 @@ void FlightMapWidget::wheelEvent(QWheelEvent *event) {
 
     int minLayer, maxLayer;
     cachePainter->getLayersRange(minLayer, maxLayer);
-
 
     // текущие координаты курсора
     this->xCursorPosition = event->pos().x();
@@ -540,9 +491,6 @@ void FlightMapWidget::wheelEvent(QWheelEvent *event) {
     cachePainter->setLayer( currentLayer, this->xCursorPosition, this->yCursorPosition);
 
     emit layerWasChanged(currentLayer); // вызывает сигнал смены слоя нак карте для слайдера
-    //ui->zoomSlider->setValue(ui->ShowMapWidget->getCurrentLayer());
-
-
 
     this->update();
 
@@ -552,7 +500,6 @@ void FlightMapWidget::wheelEvent(QWheelEvent *event) {
                                      .arg(this->cachePainter->getLayer()));
     //    emit this->setLabelStatusBarText(QString("Текущий слой: %1").arg(this->cachePainter->getLayer()));
 }
-
 
 
 double FlightMapWidget::getBCursorPosition()
@@ -569,7 +516,7 @@ void FlightMapWidget::clickCenterMapButton() {
 
     cachePainter->setLayer(17); // текущий слой
 
-    // координаты церкви в Хребтово
+    // координаты базы (например)
     this->currentBCenterRoi = stock_lat;
     this->currentLCenterRoi = stock_lon;
 
@@ -590,10 +537,6 @@ void FlightMapWidget::clickCenterMapButton() {
 
 void FlightMapWidget::slotMenuActivated(QAction* pAction)
 {
-       // if (pAction->text() == "&Add"){
-       //     qDebug() << "Add";
-       // }
-      //  else {
         QString str = pAction->text().remove("&Delete Waypoint");
         int index = str.toInt();
         qDebug() << "Delete Waypoint" << index;
@@ -631,18 +574,7 @@ void FlightMapWidget::slotMenuWithPointActivated(QAction* pAction)
 
 
 
-
-//void FlightMapWidget::setImage(QImage newImage) {
-//    this->currentImage = newImage;
-//}
-
-
-
 void FlightMapWidget::zoomFunc(QString* sign){
-  //  int rowId = buttonList.indexOf((QPushButton*)QObject::sender());
-//   QString sign = qobject_cast<QPushButton *>(sender())->objectName();
-
-//            qDebug() << sign;
 
     int minLayer, maxLayer;
     cachePainter->getLayersRange(minLayer, maxLayer);
@@ -658,7 +590,6 @@ void FlightMapWidget::zoomFunc(QString* sign){
                 currentLayer++;
     }
     cachePainter->setLayer(currentLayer, this->xCursorPosition, this->yCursorPosition);
- //   emit this->setLabelStatusBarText(QString("Текущий слой: %1").arg(this->cachePainter->getLayer()));
     emit this->setLabelStatusBarText(QString("Широта:  %1°   Долгота:  %2°   Текущий слой:  %3")
                                      .arg(this->BCursorPosition, 0, 'f', 6)
                                      .arg(this->LCursorPosition, 0, 'f', 6)
@@ -700,7 +631,6 @@ double FlightMapWidget::dist_btw_points(double lat1, double lon1, double lat2, d
 
 float FlightMapWidget::angle_btw_alts(float alt1, float alt2, float dist)
 {
-  //  if (alt1 == alt2) { return 0; }
     double pi = 3.14159265358979;
     float deltaalt = alt2-alt1;
 

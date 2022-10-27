@@ -20,6 +20,7 @@ struct quadrilateral
 class CachePainter {
 public:
     CachePainter(QString spifPath);
+    ~CachePainter();
 
 private:
     double BCenter, LCenter;

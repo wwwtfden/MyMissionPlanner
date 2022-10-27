@@ -31,6 +31,11 @@ CachePainter::CachePainter(QString spifPath)
     roiImage = QImage();
 }
 
+CachePainter::~CachePainter()
+{
+    delete spifFile;
+}
+
 // получить диапазон существующих слоев
 void CachePainter::getLayersRange(int &minLayer, int &maxLayer) {
     minLayer = spifFile->value("Layers/First").toInt()+1; // минимальный слой частично ограничен
