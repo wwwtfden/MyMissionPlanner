@@ -18,7 +18,7 @@ fmwDialog::fmwDialog(QWidget* pwgt) : QDialog(pwgt, Qt::WindowTitleHint | Qt::Wi
     ptopLayout->addWidget(indexLine, 1, 0);
     ptopLayout->addWidget(okButtonDialog, 2, 0);
     setLayout(ptopLayout);
-
+    setAttribute(Qt::WA_DeleteOnClose); // удаляем при закрытии
 }
 
 QString fmwDialog::txt() const
